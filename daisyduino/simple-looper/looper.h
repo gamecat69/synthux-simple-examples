@@ -29,14 +29,13 @@ class Looper {
       _pending_loop_start = static_cast<size_t>(loop_start * (_buffer_length - 1));
 
       // If the current loop start is not set yet, set it too
-      if (!_is_loop_set) _loop_start = _pending_loop_start;
+      if (_loop_start == -1) _loop_start = _pending_loop_start;
 
       // Set the length of the next loop
       _pending_loop_length = max(kMinLoopLength, static_cast<size_t>(loop_length * _buffer_length));
 
       //If the current loop length is not set yet, set it too
-      if (!_is_loop_set) _loop_length = _pending_loop_length;
-      _is_loop_set = true;
+      if (_loop_length == - 1) _loop_length = _pending_loop_length;
     }
   
     float Process(float in) {
@@ -89,11 +88,11 @@ class Looper {
     static const size_t kMinLoopLength = 2 * kFadeLength;
 
     float* _buffer;
-
+    
     size_t _buffer_length       = 0;
-    size_t _loop_length         = 0;
+    int32_t _loop_length        = -1;
     size_t _pending_loop_length = 0;
-    size_t _loop_start          = 0;
+    int32_t _loop_start         = -1;
     size_t _pending_loop_start  = 0;
 
     size_t _play_head = 0;
@@ -102,6 +101,5 @@ class Looper {
     size_t _rec_env_pos      = 0;
     int32_t _rec_env_pos_inc = 0;
     bool _is_empty  = true;
-    bool _is_loop_set = false;
 };
 };
