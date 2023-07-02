@@ -8,7 +8,7 @@ This looper was adapted for the Daisy pod based on the original code by VLADYSLA
 
 1. Updated control mappings for Daisy pod
 2. Updated button handling behaviour for Daisy pod buttons
-3. Button 2 clears te buffer
+3. Button 2 clears the buffer
 
 ## Controls:
 
@@ -18,3 +18,8 @@ This looper was adapted for the Daisy pod based on the original code by VLADYSLA
 - Pot 2: Loop length
 - Encoder Turn: Pitch
 - Encoder Press: Reset pitch
+
+## Potential enhancements
+
+- Save to / Load from SD Card
+- Convert to stereo
