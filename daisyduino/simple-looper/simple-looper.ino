@@ -92,6 +92,13 @@ void loop() {
   // Clear loop if button 2 is pressed
   if (digitalRead(clear_loop_pin) == LOW) {
     memset(buffer, 0, sizeof(float) * kBufferLenghtSamples);
+    hw.leds[0].Set(0, 255, 0);
+    System::Delay(500);
+    hw.leds[0].Set(0, 0, 0);
+    System::Delay(500);
+    hw.leds[0].Set(0, 255, 0);
+    System::Delay(500);
+    hw.leds[0].Set(0, 0, 0);
   }
   
 }
