@@ -15,7 +15,6 @@ static const int record_pin      = D(S42); // Switch 1. Pin 34 D27 S42 | Switch 
 static const int clear_loop_pin  = D(S43); // Switch 1. Pin 34 D27 S42 | Switch 2. Pin 35 D28 S43. S13: ENC click
 static const int loop_start_pin  = A(S36); // Pot 1.    Pin 28 A6. S36 - works!
 static const int loop_length_pin = A(S30); // Pot 2.    Pin 22 A0. S30 - works!
-static const int pitch_pin       = A(S40); // Encoder.  Pin 32 A10
 
 static const float kKnobMax = 1023;
 
@@ -33,7 +32,16 @@ auto pitch_val = 0.5;
 void AudioCallback(float **in, float **out, size_t size) {
   for (size_t i = 0; i < size; i++) {
     auto looper_out = looper.Process(in[1][i]);
-    out[0][i] = out[1][i] = pitch_shifter.Process(looper_out);
+    //out[0][i] = out[1][i] = pitch_shifter.Process(looper_out);
+    out[0][i] = pitch_shifter.Process(looper_out);
+    // Test 1: Right channel is non-pitch shifted sample
+    //out[1][i] = looper_out;
+    // Test 2: Right channel is pitched up
+    pitch_val += 0.2;
+    set_pitch(pitch_val);
+    out[1][i] = pitch_shifter.Process(looper_out);
+    pitch_val -= 0.2;
+    set_pitch(pitch_val);
   }
 }
 
@@ -70,7 +78,7 @@ void loop() {
   // Note for the Daisy Pod the button is the opposite, therefore the value is !record_on
   hw.DebounceControls();
   // Synthux Board:
-  // auto record_on = !digitalRead(record_pin);
+  // auto record_on = digitalRead(record_pin);
   // Daisy Pod:
   auto record_on = !digitalRead(record_pin);
   looper.SetRecording(record_on);
@@ -92,13 +100,13 @@ void loop() {
   // Clear loop if button 2 is pressed
   if (digitalRead(clear_loop_pin) == LOW) {
     memset(buffer, 0, sizeof(float) * kBufferLenghtSamples);
-    hw.leds[0].Set(0, 255, 0);
-    System::Delay(500);
-    hw.leds[0].Set(0, 0, 0);
-    System::Delay(500);
-    hw.leds[0].Set(0, 255, 0);
-    System::Delay(500);
-    hw.leds[0].Set(0, 0, 0);
+    hw.leds[1].Set(0, 255, 0);
+    System::Delay(100);
+    hw.leds[1].Set(0, 0, 0);
+    System::Delay(100);
+    hw.leds[1].Set(0, 255, 0);
+    System::Delay(100);
+    hw.leds[1].Set(0, 0, 0);
   }
   
 }
