@@ -9,6 +9,7 @@ This looper was adapted for the Daisy pod based on the original code by VLADYSLA
 1. Updated control mappings for Daisy pod
 2. Updated button handling behaviour for Daisy pod buttons
 3. Button 2 clears the buffer
+4. One channel is clean with no pitch shifting, the other has pitch-shifting and chorus - it sounds wild!
 
 ## Controls:
 
@@ -22,4 +23,3 @@ This looper was adapted for the Daisy pod based on the original code by VLADYSLA
 ## Potential enhancements
 
 - Save to / Load from SD Card
-- Convert to stereo

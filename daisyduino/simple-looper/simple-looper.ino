@@ -103,7 +103,8 @@ void loop() {
     pitch_val = 0.5;
   }
   //  Adjust pitch when Daisy Pod encoder if used
-  pitch_val += (hw.encoder.Increment() * 0.1);
+  pitch_val += hw.encoder.Increment();
+  //pitch_val += (hw.encoder.Increment() * 0.1);
   set_pitch(pitch_val);
 
   // Clear loop if button 2 is pressed
@@ -118,11 +119,11 @@ void loop() {
 }
 
 void set_pitch(float pitch_val) {
-  int pitch = 0;
+  int pitch = pitch_val;
   // Allow some gap in the middle of the knob turn so 
   // it's easy to cacth zero position
-  if (pitch_val < 0.45 || pitch_val > 0.55) {
-    pitch = 12.0 * (pitch_val - 0.5);
-  }
+  // if (pitch_val < 0.45 || pitch_val > 0.55) {
+  //   pitch = 12.0 * (pitch_val - 0.5);
+  // }
   pitch_shifter.SetTransposition(pitch);
 }
