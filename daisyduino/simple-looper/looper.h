@@ -8,6 +8,10 @@ class Looper {
       _buffer = buf;
       _buffer_length = length;
       // Reset buffer contents to zero
+      ClearBuffer();
+    }
+
+    void ClearBuffer() {
       memset(_buffer, 0, sizeof(float) * _buffer_length);
     }
 
