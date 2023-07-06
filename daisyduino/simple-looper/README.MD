@@ -7,19 +7,24 @@ This looper was adapted for the Daisy pod based on the original code by VLADYSLA
 ## Adaptations:
 
 1. Updated control mappings for Daisy pod
-2. Updated button handling behaviour for Daisy pod buttons
-3. Button 2 clears the buffer
-4. One channel is clean with no pitch shifting, the other has pitch-shifting and chorus - it sounds wild!
+2. Added chorus effect
+3. Added dry/wet control for chorus and pitch-shift
+4. It's now stereo!
 
 ## Controls:
 
-- Button 1: Hold to record, release to stop
-- Button 2: Clear record buffer
+- Button 1: Short-press to toggle recording on and off
+- Button 1: Long-press (> 2s) clears the recording buffer
+- Button 2: Cycle through encoder functions
+- LED 2: Magenta: Pitch Shift
+- LED 2: Cyan: Chorus
+- LED 2: Yellow: Dry/Wet
 - Pot 1: Loop start position
 - Pot 2: Loop length
-- Encoder Turn: Pitch
-- Encoder Press: Reset pitch
+- Encoder Press: Reset effect control
 
-## Potential enhancements
+## Potential future enhancements
 
+- Tweak chorus effect
+- (If on-board memory will permit) Add another effect (maybe a filter?)
 - Save to / Load from SD Card

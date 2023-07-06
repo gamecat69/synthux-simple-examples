@@ -23,7 +23,7 @@ static synthux::Looper looper_l;
 static synthux::Looper looper_r;
 static PitchShifter pitch_shifter;
 static Chorus chorus;
-static DelayLine<float, 48000> delay_line; // may delay time of 1 second
+//static DelayLine<float, 48000> delay_line; // may delay time of 1 second
 //static ReverbSc rev;
 
 // Set the pitch val to be 0.5 i.e. no pitch transposition
@@ -37,8 +37,8 @@ float chorusLfoFreq = chorusLfoFreq_default;
 bool chorusLfoFreq_changed = false;
 
 // Set the delay time in samples
-float delay_time = 6860;
-float wet_delay;
+//float delay_time = 6860;
+//float wet_delay;
 
 int buttonCurrentState;
 bool recordingActive = false;
@@ -46,51 +46,34 @@ bool recordingActive = false;
 float dryAmplitude = 0.5;
 float wetAmplitude = 0.5;
 
-int red[3]   = {1,0,0};
-int green[3] = {0,1,0};
-int blue[3]  = {0,0,1};
-
-    // {0.0f, 1.0f, 0.0f},   // GREEN
-    // {0.0f, 0.0f, 1.0f},   // BLUE
-    // {1.0f, 1.0f, 1.0f},   // WHITE
-    // {0.25f, 0.0f, 1.0f},  // PURPLE
-    // {0.0f, 0.25f, 0.75f}, // CYAN
-    // {1.0f, 0.33f, 0.0f},  // GOLD
-    // {0.0f, 0.0f, 0.0f},   // OFF
-
+// Array to hold the ID of each effect control, plus the associated LED colour
 float effects[3][3] = {
-    {0.25f, 0.0f, 1.0f},  // Magenta
-    {0.0f, 0.25f, 0.75f}, // Cyan
-    {1.0f, 0.33f, 0.0f}  // Yellow
+    {0.25f, 0.0f, 1.0f},  // Magenta: Pitch Shift
+    {0.0f, 0.25f, 0.75f}, // Cyan: Chorus
+    {1.0f, 0.33f, 0.0f}   // Yellow: Dry/Wet
     };
 int numEffects = sizeof(effects) / sizeof(effects[0]);
-// effects[0] = 1; // PitchShifter
-// effects[1] = 2; // Chorus
-// effects[2] = 3; // Filter
 int selectedEffect = 0;
 
+// Use this to limit the possible encoder values
 int dryWetEncoderMax = 21;
 
-bool secretFlash = false;
 
 void AudioCallback(float **in, float **out, size_t size) {
   for (size_t i = 0; i < size; i++) {
     auto looper_out_l = looper_l.Process(in[0][i]);
     auto looper_out_r = looper_l.Process(in[1][i]);
-    // Apply a pitch shift and chorus effect to only the left channel
-    // This either creates a wild stereo effect, or a clean and effected channel for mixing together
+
     auto pitch_shifter_out_l = pitch_shifter.Process(looper_out_l);
     auto pitch_shifter_out_r = pitch_shifter.Process(looper_out_r);
+
     auto chorus_out_l = chorus.Process(pitch_shifter_out_l);
     auto chorus_out_r = chorus.Process(pitch_shifter_out_r);
-    
-    //out[0][i] = chorus.Process(pitch_shifter_out_l);
-    //out[0][i] = chorus_out_l;
-    //out[1][i] = chorus_out_r;
 
     out[0][i] = (looper_out_l * dryAmplitude) + (chorus_out_l * wetAmplitude);
     out[1][i] = (looper_out_r * dryAmplitude) + (chorus_out_r * wetAmplitude);
 
+    // Keep this in for now... I might use it later
     // Pitch shifting causes a slight delay and a leval drop
     // Therefore, we add delay to non pitch-shifted channel so both channels are in sync
     // ... then times the 0.65 to reduce the amplitude
@@ -126,9 +109,8 @@ void setup() {
   //rev.Init(sample_rate);
 
   // Setup Delay line
-  delay_line.Init();
-  //  Set the delay time based on the pitch_shifter processing delay
-  delay_line.SetDelay(delay_time);
+  //delay_line.Init();
+  //delay_line.SetDelay(delay_time);
 
   // Setup pins
   pinMode(record_pin, INPUT);
@@ -217,7 +199,6 @@ void loop() {
       if (pod.encoder.RisingEdge()) {
         dryAmplitude = 0.5;
         wetAmplitude = 0.5;
-        secretFlash = false;
       }
       
       // Dry wet will always be a value between 0 and encoderMax - 1
