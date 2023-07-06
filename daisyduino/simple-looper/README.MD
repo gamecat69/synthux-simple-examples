@@ -16,9 +16,9 @@ This looper was adapted for the Daisy pod based on the original code by VLADYSLA
 - Button 1: Short-press to toggle recording on and off
 - Button 1: Long-press (> 2s) clears the recording buffer
 - Button 2: Cycle through encoder functions
-- LED 2: Magenta: Pitch Shift
-- LED 2: Cyan: Chorus
-- LED 2: Yellow: Dry/Wet
+	- LED 2: Magenta: Pitch Shift
+	- LED 2: Cyan: Chorus
+	- LED 2: Yellow: Dry/Wet
 - Pot 1: Loop start position
 - Pot 2: Loop length
 - Encoder Press: Reset effect control
