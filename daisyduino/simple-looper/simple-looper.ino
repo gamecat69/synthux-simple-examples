@@ -58,7 +58,6 @@ int selectedEffect = 0;
 // Use this to limit the possible encoder values
 int dryWetEncoderMax = 21;
 
-
 void AudioCallback(float **in, float **out, size_t size) {
   for (size_t i = 0; i < size; i++) {
     auto looper_out_l = looper_l.Process(in[0][i]);
@@ -197,8 +196,10 @@ void loop() {
 
       // hmmm, not sure yet. Maybe adjust the dry/wet?
       if (pod.encoder.RisingEdge()) {
-        dryAmplitude = 0.5;
-        wetAmplitude = 0.5;
+        looper_l.ToggleReverse();
+        looper_r.ToggleReverse();
+        //dryAmplitude = 0.5;
+        //wetAmplitude = 0.5;
       }
       
       // Dry wet will always be a value between 0 and encoderMax - 1

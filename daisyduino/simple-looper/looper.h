@@ -11,6 +11,10 @@ class Looper {
       ClearBuffer();
     }
 
+    void ToggleReverse() {
+      reversePlayback = !reversePlayback;
+    }
+
     void ClearBuffer() {
       memset(_buffer, 0, sizeof(float) * _buffer_length);
     }
@@ -73,8 +77,13 @@ class Looper {
       }
       
       // Read from the buffer
-      auto play_pos = (_loop_start + _play_head) % _buffer_length;
-      output = _buffer[play_pos] * attenuation;
+      if (reversePlayback == true) {
+        auto play_pos = ((_loop_start + _buffer_length) - _play_head) % _buffer_length;
+        output = _buffer[play_pos] * attenuation;
+      } else {
+        auto play_pos = (_loop_start + _play_head) % _buffer_length;
+        output = _buffer[play_pos] * attenuation;
+      }
 
       // Advance playhead
       _play_head ++;
@@ -105,5 +114,6 @@ class Looper {
     size_t _rec_env_pos      = 0;
     int32_t _rec_env_pos_inc = 0;
     bool _is_empty  = true;
+    bool reversePlayback = false;
 };
 };
